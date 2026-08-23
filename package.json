@@ -1,0 +1,28 @@
+{
+  "name": "@scorecat/shared-web-components",
+  "version": "0.1.0",
+  "description": "Shared ScoreCat ecosystem web pieces: sites manifest + world-aware URL resolution. Tokens and the BrandBar join after the design freeze (see ScoreCatWebMain/docs/ECOSYSTEM-UNIFICATION.md).",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": ["dist"],
+  "scripts": {
+    "build": "tsc",
+    "prepare": "npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ScoreCatTeam/scorecat-shared-web-components.git"
+  },
+  "license": "UNLICENSED",
+  "private": false,
+  "devDependencies": {
+    "typescript": "^5.5.0"
+  }
+}
