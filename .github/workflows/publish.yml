@@ -1,0 +1,44 @@
+# Publish this package to the org's private npm registry (GitHub Packages).
+#
+# No secrets: the workflow's own GITHUB_TOKEN has packages:write for the
+# package linked to this repo. Consumers install it with THEIR default
+# GITHUB_TOKEN after this package's settings grant their repo Read under
+# "Manage Actions access" — no PATs anywhere in CI.
+#
+# A push that does not bump the version publishes nothing (the guard below),
+# so docs-only commits are inert. To release: bump "version" in package.json.
+name: Publish to GitHub Packages
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          registry-url: https://npm.pkg.github.com
+
+      - run: npm ci
+
+      - name: Publish if this version is new
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          V=$(node -p "require('./package.json').version")
+          if npm view "@scorecatteam/shared-web-components@$V" version >/dev/null 2>&1; then
+            echo "v$V already published — bump package.json version to release." >> "$GITHUB_STEP_SUMMARY"
+          else
+            npm publish
+            echo "Published @scorecatteam/shared-web-components@$V" >> "$GITHUB_STEP_SUMMARY"
+          fi
