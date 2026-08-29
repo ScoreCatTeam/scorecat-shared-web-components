@@ -64,10 +64,11 @@ export const SITES: Record<SiteId, SiteEntry> = {
     prod: 'https://auth.scorecatonline.com',
   },
   marketplace: {
-    // Hosted outside the Firebase project; no staging twin, excluded from
-    // release-all (ECOSYSTEM-UNIFICATION §7).
+    // Same org and same Firebase project as the rest. Still outside
+    // release-all.yml only because the repo has no CI yet to pin an rc-<sha>
+    // (ECOSYSTEM-UNIFICATION §7).
     label: 'Marketplace',
-    staging: null,
+    staging: 'https://staging-marketplace.scorecatonline.com',
     prod: 'https://marketplace.scorecatonline.com',
   },
   judges: {
