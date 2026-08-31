@@ -37,15 +37,20 @@ export interface SiteEntry {
  * The whole ecosystem — the data model knows every site; consumers render only
  * what is ready (`hidden` stays out of public nav).
  *
- * ⚠️ `main.prod` is `scorecat-website.web.app` until the apex/`www` domain
- * flips to the Astro site (ECOSYSTEM-UNIFICATION §6). Change it to
- * `https://www.scorecatonline.com` on flip day and bump this package.
+ * `main.prod` is the APEX, not `www`. The apex flipped to the Astro site on
+ * 2026-08-31; `www` did NOT flip with it — its Firebase customDomain is still
+ * OWNERSHIP_MISSING on a stale registration, so `www` continues to serve from
+ * WordPress/Bluehost, which 301s (path-preserving) to the apex. Pointing the
+ * ecosystem's cross-site nav at `www` would therefore route every hop through
+ * a box we are decommissioning. The apex serves 200 permanently under the
+ * serve-both model, so this value stays correct after `www` flips too.
+ * (Canonical tags still point at `www` — that is the SEO surface, not this.)
  */
 export const SITES: Record<SiteId, SiteEntry> = {
   main: {
     label: 'ScoreCat',
     staging: 'https://staging-www.scorecatonline.com',
-    prod: 'https://scorecat-website.web.app',
+    prod: 'https://scorecatonline.com',
   },
   results: {
     label: 'Meet Results',
