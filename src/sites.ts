@@ -26,7 +26,11 @@ export type SiteId =
 export interface SiteEntry {
   /** Short, space-constrained label — canonical for the shared bar (§4a). */
   label: string;
-  /** Staging twin URL, or null when the site has none (marketplace). */
+  /**
+   * Staging twin URL, or null when the site has none. Every entry has one as of
+   * 2026-08-30, when the marketplace gained `staging-marketplace` (#1) — the type
+   * stays nullable because a future site may land before its twin does.
+   */
   staging: string | null;
   prod: string;
   /** In the manifest but not rendered in public wayfinding (judges/admin). */
@@ -69,9 +73,10 @@ export const SITES: Record<SiteId, SiteEntry> = {
     prod: 'https://auth.scorecatonline.com',
   },
   marketplace: {
-    // Same org and same Firebase project as the rest. Still outside
-    // release-all.yml only because the repo has no CI yet to pin an rc-<sha>
-    // (ECOSYSTEM-UNIFICATION §7).
+    // Same org and same Firebase project as the rest, and — since
+    // ScoreCatTeam/meet-marketplace#10 (2026-09-01) — the same
+    // deploy/promote/rollback pipeline, so it pins rc-<sha> channels like every
+    // other site and belongs in release-all.yml.
     label: 'Marketplace',
     staging: 'https://staging-marketplace.scorecatonline.com',
     prod: 'https://marketplace.scorecatonline.com',
@@ -114,8 +119,8 @@ export function getWorld(): SiteWorld {
  *
  * Staging pages link to staging twins so an unreleased ecosystem can be
  * verified end-to-end; everything else — production AND local dev — links to
- * production. A site with no staging twin (marketplace) always resolves to
- * production, even from staging.
+ * production. A site with no `staging` value falls back to production even from
+ * staging; no entry is in that state today.
  */
 export function resolveSiteUrl(siteId: SiteId, path = '', world: SiteWorld = getWorld()): string {
   const site = SITES[siteId];
