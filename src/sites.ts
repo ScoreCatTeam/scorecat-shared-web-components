@@ -1,7 +1,7 @@
 /**
  * ScoreCat ecosystem sites manifest + world-aware URL resolution.
  *
- * Source of truth for the contract: ScoreCatWebMain/docs/ECOSYSTEM-UNIFICATION.md
+ * Source of truth for the contract: scorecat-website-react/docs/ECOSYSTEM-UNIFICATION.md
  * (§3 "URL strategy — flip day is zero code changes"). URLs verified against
  * docs/HOSTED-SITES.md.
  *
@@ -42,13 +42,10 @@ export interface SiteEntry {
  * what is ready (`hidden` stays out of public nav).
  *
  * `main.prod` is the APEX, not `www`. The apex flipped to the Astro site on
- * 2026-08-31; `www` did NOT flip with it — its Firebase customDomain is still
- * OWNERSHIP_MISSING on a stale registration, so `www` continues to serve from
- * WordPress/Bluehost, which 301s (path-preserving) to the apex. Pointing the
- * ecosystem's cross-site nav at `www` would therefore route every hop through
- * a box we are decommissioning. The apex serves 200 permanently under the
- * serve-both model, so this value stays correct after `www` flips too.
- * (Canonical tags still point at `www` — that is the SEO surface, not this.)
+ * 2026-08-31 and `www` followed on 2026-09-05 (CNAME scorecat-website.web.app);
+ * both now serve the same Firebase Hosting site under the serve-both model, so
+ * this value is correct and stable — cross-site nav hops never depend on `www`.
+ * (Canonical tags point at `www` — that is the SEO surface, not this.)
  */
 export const SITES: Record<SiteId, SiteEntry> = {
   main: {
