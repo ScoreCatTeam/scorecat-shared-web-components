@@ -113,7 +113,10 @@ export const SITES: Record<SiteId, SiteEntry> = {
  * Today this matches every consumer's own list; if WEB-30 (scorecat-website-react#38)
  * reorders the switcher, change it HERE and nowhere else.
  */
-export const SWITCHER_SITES: readonly SiteId[] = ['main', 'results', 'reports', 'auth', 'marketplace'];
+export const SWITCHER_SITES = ['main', 'results', 'reports', 'auth', 'marketplace'] as const satisfies readonly SiteId[];
+
+/** A site that appears in the switcher — lets consumers type an exact icon map. */
+export type SwitcherSiteId = (typeof SWITCHER_SITES)[number];
 
 /** Footnote under the switcher list, one string for every consumer. */
 export const SWITCHER_FOOTNOTE = 'Judge & admin portals stay out of public wayfinding.';
