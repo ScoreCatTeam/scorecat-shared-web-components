@@ -1,4 +1,4 @@
-# @scorecat/shared-web-components
+# @scorecatteam/shared-web-components
 
 Shared web pieces for the ScoreCat ecosystem, consumed as a git dependency:
 
@@ -7,7 +7,7 @@ npm i github:ScoreCatTeam/scorecat-shared-web-components#main
 ```
 
 ```ts
-import { SITES, resolveSiteUrl, resolveWorld, getWorld } from '@scorecat/shared-web-components';
+import { SITES, resolveSiteUrl, resolveWorld, getWorld } from '@scorecatteam/shared-web-components';
 
 resolveSiteUrl('reports');        // world-aware: staging pages get the staging twin
 resolveSiteUrl('auth', '/login'); // append a path
@@ -16,6 +16,9 @@ resolveSiteUrl('auth', '/login'); // append a path
 ## What's here
 
 - `sites.ts` — the ecosystem manifest (all seven sites, judges/admin `hidden`),
+  each with its `label` and switcher `blurb`; `SWITCHER_SITES` (the public
+  wayfinding order) and `SWITCHER_FOOTNOTE`, so the site switcher renders from
+  data on every site (scorecat-website-react#64);
   the canonical staging/production world rule (site-name based — **never**
   `.web.app` detection), and `resolveSiteUrl()`.
 
@@ -28,7 +31,7 @@ contract; this package implements it.
 
 ## Releasing a change
 
-Push to `main`, then in each consumer: `npm update @scorecat/shared-web-components`
+Push to `main`, then in each consumer: `npm update @scorecatteam/shared-web-components`
 and redeploy. Cross-repo changes ride the "stage everything, verify each
 `staging-*` host, promote together" rule (contract §4).
 

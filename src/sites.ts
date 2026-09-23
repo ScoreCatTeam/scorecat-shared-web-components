@@ -27,6 +27,12 @@ export interface SiteEntry {
   /** Short, space-constrained label — canonical for the shared bar (§4a). */
   label: string;
   /**
+   * One-line descriptor rendered under the label in the site switcher and the
+   * hub's quick-links band. Lives here so the five consumers render one string
+   * instead of five hand-copied lists (scorecat-website-react#64 / WEB-30).
+   */
+  blurb: string;
+  /**
    * Staging twin URL, or null when the site has none. Every entry has one as of
    * 2026-08-30, when the marketplace gained `staging-marketplace` (#1) — the type
    * stays nullable because a future site may land before its twin does.
@@ -50,22 +56,26 @@ export interface SiteEntry {
 export const SITES: Record<SiteId, SiteEntry> = {
   main: {
     label: 'ScoreCat',
+    blurb: 'Apps, pricing, and the ScoreCat Pride',
     staging: 'https://staging-www.scorecatonline.com',
     prod: 'https://scorecatonline.com',
   },
   results: {
     label: 'Meet Results',
+    blurb: 'Live scores from every meet',
     staging: 'https://staging-results.scorecatonline.com',
     prod: 'https://results.scorecatonline.com',
   },
   reports: {
     label: 'Reports',
+    blurb: 'Season rankings by state and region',
     staging: 'https://staging-reports.scorecatonline.com',
     prod: 'https://reports.scorecatonline.com',
   },
   auth: {
     // Binding audience-facing name (never "Auth", never "Meet Directors").
     label: 'Meet Publishing',
+    blurb: 'Publish your meet to ScoreCat',
     staging: 'https://staging-auth.scorecatonline.com',
     prod: 'https://auth.scorecatonline.com',
   },
@@ -75,22 +85,38 @@ export const SITES: Record<SiteId, SiteEntry> = {
     // deploy/promote/rollback pipeline, so it pins rc-<sha> channels like every
     // other site and belongs in release-all.yml.
     label: 'Marketplace',
+    blurb: 'Find and book meet hosts',
     staging: 'https://staging-marketplace.scorecatonline.com',
     prod: 'https://marketplace.scorecatonline.com',
   },
   judges: {
     label: 'Judges',
+    // Hidden sites never render in public wayfinding; the blurb exists only so
+    // every entry has the same shape.
+    blurb: 'Judge portal',
     staging: 'https://staging-judges.scorecatonline.com',
     prod: 'https://judges.scorecatonline.com',
     hidden: true,
   },
   admin: {
     label: 'Admin',
+    blurb: 'Admin portal',
     staging: 'https://staging-admin.scorecatonline.com',
     prod: 'https://admin.scorecatonline.com',
     hidden: true,
   },
 };
+
+/**
+ * Public wayfinding order for the site switcher — the sites a visitor can be
+ * sent to, in the order the switcher lists them (hidden sites stay out, §4a).
+ * Today this matches every consumer's own list; if WEB-30 (scorecat-website-react#38)
+ * reorders the switcher, change it HERE and nowhere else.
+ */
+export const SWITCHER_SITES: readonly SiteId[] = ['main', 'results', 'reports', 'auth', 'marketplace'];
+
+/** Footnote under the switcher list, one string for every consumer. */
+export const SWITCHER_FOOTNOTE = 'Judge & admin portals stay out of public wayfinding.';
 
 const LOCAL_HOSTS = new Set(['localhost', '127.0.0.1', '0.0.0.0', '[::1]']);
 
