@@ -16,7 +16,8 @@ resolveSiteUrl('auth', '/login'); // append a path
 ## What's here
 
 - `sites.ts` — the ecosystem manifest (all seven sites, judges/admin `hidden`),
-  each with its `label` and switcher `blurb`; `SWITCHER_SITES` (the public
+  each with its `label`, an optional `longLabel` for surfaces with room (the
+  hub's tiles) and its switcher `blurb`; `SWITCHER_SITES` (the public
   wayfinding order) and `SWITCHER_FOOTNOTE`, so the site switcher renders from
   data on every site (scorecat-website-react#64);
   the canonical staging/production world rule (site-name based — **never**

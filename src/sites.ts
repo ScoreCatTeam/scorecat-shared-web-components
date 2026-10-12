@@ -27,6 +27,13 @@ export interface SiteEntry {
   /** Short, space-constrained label — canonical for the shared bar (§4a). */
   label: string;
   /**
+   * Long form of the label, for surfaces with room to say what the site is
+   * (the hub's quick-links tiles). Set only where it differs from `label`; read
+   * it as `longLabel ?? label`. Two lengths, deliberately: NAV-SPEC §9.2 =
+   * `long` (scorecat-website-react#68).
+   */
+  longLabel?: string;
+  /**
    * One-line descriptor rendered under the label in the site switcher and the
    * hub's quick-links band. Lives here so the five consumers render one string
    * instead of five hand-copied lists (scorecat-website-react#64 / WEB-30).
@@ -68,6 +75,7 @@ export const SITES: Record<SiteId, SiteEntry> = {
   },
   reports: {
     label: 'Reports',
+    longLabel: 'State & Regional Reports',
     blurb: 'Season rankings by state and region',
     staging: 'https://staging-reports.scorecatonline.com',
     prod: 'https://reports.scorecatonline.com',
@@ -85,6 +93,7 @@ export const SITES: Record<SiteId, SiteEntry> = {
     // deploy/promote/rollback pipeline, so it pins rc-<sha> channels like every
     // other site and belongs in release-all.yml.
     label: 'Marketplace',
+    longLabel: 'Meet Host Marketplace',
     blurb: 'Find and book meet hosts',
     staging: 'https://staging-marketplace.scorecatonline.com',
     prod: 'https://marketplace.scorecatonline.com',
@@ -110,8 +119,9 @@ export const SITES: Record<SiteId, SiteEntry> = {
 /**
  * Public wayfinding order for the site switcher — the sites a visitor can be
  * sent to, in the order the switcher lists them (hidden sites stay out, §4a).
- * Today this matches every consumer's own list; if WEB-30 (scorecat-website-react#38)
- * reorders the switcher, change it HERE and nowhere else.
+ * The order is deliberate and differs from the header's: NAV-SPEC §9.1 = `keep`
+ * (scorecat-website-react#68). To reorder the switcher, change it HERE and
+ * nowhere else.
  */
 export const SWITCHER_SITES = ['main', 'results', 'reports', 'auth', 'marketplace'] as const satisfies readonly SiteId[];
 
